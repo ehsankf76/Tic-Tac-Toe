@@ -12,6 +12,7 @@ field.pack()
 font_turn = "Times 20 italic bold"
 font_end = "Times 30 italic bold"
 font_marker = "Times 60 italic bold"
+end_game = False
 tell_whose_turn = field.create_text(300, 20, fill="darkblue", font=font_turn,
                                     text="@ Turn to click")
 
@@ -33,7 +34,9 @@ field.create_line(50, 400, 550, 400)
 
 # For detecting mouse click for playing
 def click(event):
-    global turn, game_field
+    global turn, game_field, end_game
+    if end_game:
+        return
     if turn%2 == 1:
         text = "@"
         color = "brown"
@@ -109,6 +112,8 @@ def click(event):
         return
 
     check_win()
+    if end_game:
+        return
     turn +=1
     change_turn()
 
@@ -147,7 +152,8 @@ def check_win():
 
 # Tell if a player won or it's a draw
 def win_or_draw(x1=75, y1=175, x2=525, y2=475, winner="draw", sloped=0):
-    global tell_whose_turn
+    global tell_whose_turn, end_game
+    end_game = True
     color = {"@": "brown",
              "#": "darkcyan"}
     if winner=="draw":
