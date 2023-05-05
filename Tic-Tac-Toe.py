@@ -1,12 +1,16 @@
 # Adding the Libraries
 from tkinter import *
+from math import radians
 
 # Initializing the window
 root = Tk()
 root.title("Tic-Tac-Toe Game")
+root.resizable(False, False)
 field = Canvas(root, width=600, height=600)
+field.configure(bg="#dce2e5")
 field.pack()
 font_turn = "Times 20 italic bold"
+font_end = "Times 30 italic bold"
 font_marker = "Times 60 italic bold"
 tell_whose_turn = field.create_text(300, 20, fill="darkblue", font=font_turn,
                                     text="@ Turn to click")
@@ -23,9 +27,9 @@ field.create_line(400, 50, 400, 550)
 field.create_line(50, 200, 550, 200)
 field.create_line(50, 400, 550, 400)
 
-##################################################
-############## The needed Functions ##############
-##################################################
+##################################################################
+###################### The needed Functions ######################
+##################################################################
 
 # For detecting mouse click for playing
 def click(event):
@@ -104,6 +108,7 @@ def click(event):
     else:
         return
 
+    check_win()
     turn +=1
     change_turn()
 
@@ -128,11 +133,43 @@ def add_marker(x, y, txt, color):
 
 # For checking if a player has won the game
 def check_win():
-    pass
+    for i in range(3):
+        if game_field[i][0]==game_field[i][1]==game_field[i][2] != 0:
+            win_or_draw(175*i+125-2, 75, 175*i+125+2, 525, game_field[i][0])
+        elif game_field[0][i]==game_field[1][i]==game_field[2][i] != 0:
+            win_or_draw(75, 175*i+125-2, 525, 175*i+125+2, game_field[0][i])
+    if game_field[0][0]==game_field[1][1]==game_field[2][2] != 0:
+        win_or_draw(74, 76, 526, 524, game_field[1][1], sloped=1)
+    elif game_field[2][0]==game_field[1][1]==game_field[0][2] != 0:
+        win_or_draw(74, 524, 526, 76, game_field[1][1], sloped=1)
+    if sum([row.count(0) for row in game_field])==0:
+        win_or_draw(winner="draw")
 
-##################################################
-##################################################
-##################################################
+# Tell if a player won or it's a draw
+def win_or_draw(x1=75, y1=175, x2=525, y2=475, winner="draw", sloped=0):
+    global tell_whose_turn
+    color = {"@": "brown",
+             "#": "darkcyan"}
+    if winner=="draw":
+        field.delete(tell_whose_turn)
+        field.create_text(300, 20, fill="black", font=font_end,
+                          text="---"+winner+"---")
+    else:
+        if sloped==0:
+            field.delete(tell_whose_turn)
+            field.create_text(300, 20, fill=color[winner], font=font_end,
+                              text=winner+" has WON!")
+            field.create_rectangle(x1, y1, x2, y2, fill=color[winner], outline=color[winner])
+        else:
+            field.delete(tell_whose_turn)
+            field.create_text(300, 20, fill=color[winner], font=font_end,
+                              text=winner+"has WON!")
+            # create the rectangle as a polygon
+            field.create_polygon(x1, y1, y1, x1, x2, y2, y2, x2, fill=color[winner], outline=color[winner])
+
+##################################################################
+##################################################################
+##################################################################
 
 
 # The loop of the game
