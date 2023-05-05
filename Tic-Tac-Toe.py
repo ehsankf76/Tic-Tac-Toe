@@ -20,6 +20,7 @@ counter = {"@": 0,
            "#": 0}
 end_game = False
 turn = 1
+prev_turn = 1
 game_field = [[0, 0, 0],
               [0, 0, 0],
               [0, 0, 0]]
@@ -210,8 +211,11 @@ def win_or_draw(x1="", y1="", x2="", y2="", winner="draw", sloped=0):
     counting()
 
 def again():
-    global turn, game_field, tell_whose_turn, end_game
-    turn = 1
+    global turn, game_field, tell_whose_turn, end_game, prev_turn
+    if prev_turn == 1:
+        turn, prev_turn = 0, 0
+    elif prev_turn == 0:
+        turn, prev_turn = 1, 1
     game_field = [[0, 0, 0],
                   [0, 0, 0],
                   [0, 0, 0]]
@@ -219,8 +223,12 @@ def again():
     
     # Delete all & initiate the field again
     field.delete("all")
-    tell_whose_turn = field.create_text(300, 20, fill="darkblue", font=font_turn,
-                                    text="@ Turn to click")
+    if turn%2 == 1:
+        tell_whose_turn = field.create_text(300, 20, fill="darkblue", font=font_turn,
+                                            text="@ Turn to click")
+    elif turn%2 == 0:
+        tell_whose_turn = field.create_text(300, 20, fill="darkblue", font=font_turn,
+                                            text="# Turn to click")
     field.create_line(200, 50, 200, 550)
     field.create_line(400, 50, 400, 550)
     field.create_line(50, 200, 550, 200)
