@@ -172,6 +172,12 @@ def win_or_draw(x1=75, y1=175, x2=525, y2=475, winner="draw", sloped=0):
                               text=winner+"has WON!")
             # create the rectangle as a polygon
             field.create_polygon(x1, y1, y1, x1, x2, y2, y2, x2, fill=color[winner], outline=color[winner])
+    
+    # Create a Button to Exit
+    exit_button = Button(root, text = 'Exit \U0001f614', bd = '6', font="10",
+                 command = root.destroy)
+    # Set the position of button on the left of the text, on top  
+    exit_button.place(x=113, y=5)
 
 ##################################################################
 ##################################################################
