@@ -12,11 +12,11 @@ field.pack()
 font_turn = "Times 20 italic bold"
 font_end = "Times 30 italic bold"
 font_marker = "Times 60 italic bold"
-end_game = False
 tell_whose_turn = field.create_text(300, 20, fill="darkblue", font=font_turn,
                                     text="@ Turn to click")
 
 # Global variables for the game
+end_game = False
 turn = 1
 game_field = [[0, 0, 0],
               [0, 0, 0],
@@ -177,7 +177,29 @@ def win_or_draw(x1=75, y1=175, x2=525, y2=475, winner="draw", sloped=0):
     exit_button = Button(root, text = 'Exit \U0001f614', bd = '6', font="10",
                  command = root.destroy)
     # Set the position of button on the left of the text, on top  
-    exit_button.place(x=113, y=5)
+    exit_button.place(x=113, y=2)
+
+    # Create a Button to Reset
+    reset_button = Button(root, text = 'Reset \U0001f600', bd = '6', font="10",
+                 command = lambda: again())
+    # Set the position of button on the left of the text, on top  
+    reset_button.place(x=415, y=2)
+
+def again():
+    global turn, game_field, tell_whose_turn, end_game
+    game_field = [[0, 0, 0],
+                  [0, 0, 0],
+                  [0, 0, 0]]
+    end_game = False
+    
+    # Delete all & initiate the field again
+    field.delete("all")
+    tell_whose_turn = field.create_text(300, 20, fill="darkblue", font=font_turn,
+                                    text="@ Turn to click")
+    field.create_line(200, 50, 200, 550)
+    field.create_line(400, 50, 400, 550)
+    field.create_line(50, 200, 550, 200)
+    field.create_line(50, 400, 550, 400)
 
 ##################################################################
 ##################################################################
