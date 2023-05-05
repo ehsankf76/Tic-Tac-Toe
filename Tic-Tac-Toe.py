@@ -241,8 +241,7 @@ def again():
 
 
 # The loop of the game
-global count
-count = counting()
+counting()
 field.bind("<Button-1>", click)
 field.pack()
 
