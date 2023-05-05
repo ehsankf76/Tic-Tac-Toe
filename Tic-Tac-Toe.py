@@ -28,6 +28,18 @@ field.create_line(400, 50, 400, 550)
 field.create_line(50, 200, 550, 200)
 field.create_line(50, 400, 550, 400)
 
+# Create a Button to Exit
+exit_button = Button(root, text = 'Exit \U0001f614', bd = '6', font="10",
+             command = root.destroy)
+# Set the position of button on the left of the text, on top  
+exit_button.place(x=113, y=2)
+
+# Create a Button to Reset
+reset_button = Button(root, text = 'Reset \U0001f600', bd = '6', font="10",
+             command = lambda: again())
+# Set the position of button on the left of the text, on top  
+reset_button.place(x=415, y=2)
+
 ##################################################################
 ###################### The needed Functions ######################
 ##################################################################
@@ -147,13 +159,16 @@ def check_win():
         win_or_draw(74, 76, 526, 524, game_field[1][1], sloped=1)
     elif game_field[2][0]==game_field[1][1]==game_field[0][2] != 0:
         win_or_draw(74, 524, 526, 76, game_field[1][1], sloped=1)
-    if sum([row.count(0) for row in game_field])==0:
+    elif sum([row.count(0) for row in game_field])==0:
         win_or_draw(winner="draw")
 
 # Tell if a player won or it's a draw
 def win_or_draw(x1=75, y1=175, x2=525, y2=475, winner="draw", sloped=0):
     global tell_whose_turn, end_game
-    end_game = True
+    if end_game:
+        return
+    else:
+        end_game = True
     color = {"@": "brown",
              "#": "darkcyan"}
     if winner=="draw":
@@ -172,18 +187,6 @@ def win_or_draw(x1=75, y1=175, x2=525, y2=475, winner="draw", sloped=0):
                               text=winner+"has WON!")
             # create the rectangle as a polygon
             field.create_polygon(x1, y1, y1, x1, x2, y2, y2, x2, fill=color[winner], outline=color[winner])
-    
-    # Create a Button to Exit
-    exit_button = Button(root, text = 'Exit \U0001f614', bd = '6', font="10",
-                 command = root.destroy)
-    # Set the position of button on the left of the text, on top  
-    exit_button.place(x=113, y=2)
-
-    # Create a Button to Reset
-    reset_button = Button(root, text = 'Reset \U0001f600', bd = '6', font="10",
-                 command = lambda: again())
-    # Set the position of button on the left of the text, on top  
-    reset_button.place(x=415, y=2)
 
 def again():
     global turn, game_field, tell_whose_turn, end_game
