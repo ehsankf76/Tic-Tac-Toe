@@ -11,10 +11,13 @@ field.pack()
 font_turn = "Times 20 italic bold"
 font_end = "Times 30 italic bold"
 font_marker = "Times 60 italic bold"
+font_counter = "Times 40 bold"
 tell_whose_turn = field.create_text(300, 20, fill="darkblue", font=font_turn,
                                     text="@ Turn to click")
 
 # Global variables for the game
+counter = {"@": 0,
+           "#": 0}
 end_game = False
 turn = 1
 game_field = [[0, 0, 0],
@@ -42,6 +45,18 @@ reset_button.place(x=415, y=2)
 ##################################################################
 ###################### The needed Functions ######################
 ##################################################################
+
+# For showing the scoers:
+def counting():
+    global counter, score2, score3, player2, player3
+    player2 = field.create_text(30, 30, fill="brown", font=font_counter,
+                                text="@")
+    score2 = field.create_text(30, 90, fill="brown", font=font_counter,
+                               text=counter["@"])
+    player3 = field.create_text(570, 30, fill="darkcyan", font=font_counter,
+                                text="#")
+    score3 = field.create_text(570, 90, fill="darkcyan", font=font_counter,
+                               text=counter["#"])
 
 # For detecting mouse click for playing
 def click(event):
@@ -163,7 +178,7 @@ def check_win():
 
 # Tell if a player won or it's a draw
 def win_or_draw(x1="", y1="", x2="", y2="", winner="draw", sloped=0):
-    global tell_whose_turn, end_game
+    global tell_whose_turn, end_game, counter
     if end_game:
         return
     else:
@@ -186,9 +201,17 @@ def win_or_draw(x1="", y1="", x2="", y2="", winner="draw", sloped=0):
                               text=winner+"has WON!")
             # create the rectangle as a polygon
             field.create_polygon(x1, y1, y1, x1, x2, y2, y2, x2, fill=color[winner], outline=color[winner])
+        counter[winner] += 1
+        
+    field.delete(player2)
+    field.delete(player3)
+    field.delete(score2)
+    field.delete(score3)
+    counting()
 
 def again():
     global turn, game_field, tell_whose_turn, end_game
+    turn = 1
     game_field = [[0, 0, 0],
                   [0, 0, 0],
                   [0, 0, 0]]
@@ -202,6 +225,7 @@ def again():
     field.create_line(400, 50, 400, 550)
     field.create_line(50, 200, 550, 200)
     field.create_line(50, 400, 550, 400)
+    counting()
 
 ##################################################################
 ##################################################################
@@ -209,6 +233,8 @@ def again():
 
 
 # The loop of the game
+global count
+count = counting()
 field.bind("<Button-1>", click)
 field.pack()
 
