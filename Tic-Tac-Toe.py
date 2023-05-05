@@ -1,6 +1,5 @@
 # Adding the Libraries
 from tkinter import *
-from math import radians
 
 # Initializing the window
 root = Tk()
@@ -152,18 +151,18 @@ def add_marker(x, y, txt, color):
 def check_win():
     for i in range(3):
         if game_field[i][0]==game_field[i][1]==game_field[i][2] != 0:
-            win_or_draw(175*i+125-2, 75, 175*i+125+2, 525, game_field[i][0])
+            win_or_draw(x1=175*i+125-2, y1=75, x2=175*i+125+2, y2=525, winner=game_field[i][0])
         elif game_field[0][i]==game_field[1][i]==game_field[2][i] != 0:
-            win_or_draw(75, 175*i+125-2, 525, 175*i+125+2, game_field[0][i])
+            win_or_draw(x1=75, y1=175*i+125-2, x2=525, y2=175*i+125+2, winner=game_field[0][i])
     if game_field[0][0]==game_field[1][1]==game_field[2][2] != 0:
-        win_or_draw(74, 76, 526, 524, game_field[1][1], sloped=1)
+        win_or_draw(x1=74, y1=76, x2=526, y2=524, winner=game_field[1][1], sloped=1)
     elif game_field[2][0]==game_field[1][1]==game_field[0][2] != 0:
-        win_or_draw(74, 524, 526, 76, game_field[1][1], sloped=1)
+        win_or_draw(x1=74, y1=524, x2=526, y2=76, winner=game_field[1][1], sloped=1)
     elif sum([row.count(0) for row in game_field])==0:
         win_or_draw(winner="draw")
 
 # Tell if a player won or it's a draw
-def win_or_draw(x1=75, y1=175, x2=525, y2=475, winner="draw", sloped=0):
+def win_or_draw(x1="", y1="", x2="", y2="", winner="draw", sloped=0):
     global tell_whose_turn, end_game
     if end_game:
         return
